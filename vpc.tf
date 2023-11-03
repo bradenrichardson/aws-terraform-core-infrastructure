@@ -25,8 +25,8 @@ module "endpoints" {
   security_group_name_prefix = "tfn-vpc-endpoints-"
   security_group_description = "VPC endpoint security group"
   security_group_rules = {
-    ingress_http = {
-      description = "HTTP from VPC"
+    ingress_https = {
+      description = "HTTPS from VPC"
       cidr_blocks = [module.vpc.vpc_cidr_block]
     }
   }
@@ -34,6 +34,18 @@ module "endpoints" {
   endpoints = {
     ecr_api = {
       service             = "ecr.api"
+      private_dns_enabled = true
+      subnet_ids          = module.vpc.private_subnets
+      policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
+    }
+    ecr_dkr = {
+      service             = "ecr.dkr"
+      private_dns_enabled = true
+      subnet_ids          = module.vpc.private_subnets
+      policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
+    }
+    s3 = {
+      service             = "s3"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
