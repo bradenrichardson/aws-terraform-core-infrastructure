@@ -47,7 +47,7 @@ module "endpoints" {
 
 data "aws_iam_policy_document" "generic_endpoint_policy" {
   statement {
-    effect    = "Deny"
+    effect    = "Allow"
     actions   = ["*"]
     resources = ["*"]
 
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "generic_endpoint_policy" {
     }
 
     condition {
-      test     = "StringNotEquals"
+      test     = "StringEquals"
       variable = "aws:SourceVpc"
 
       values = [module.vpc.vpc_id]
